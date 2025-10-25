@@ -1,0 +1,54 @@
+#task one:: Hangman Game Goal: Create a simple text-based Hangman game where the player guesses a word one letter at a time. Simplified Scope: ● Use a small list of 5 predefined words (no need to use a file or API). ● Limit incorrect guesses to 6. ● Basic console input/output — no graphics or audio.
+import random
+
+def hangman():
+    # Predefined list of words
+    words = ["python", "hangman", "developer", "program", "computer"]
+    word = random.choice(words)  # Pick a random word
+    guessed_letters = []         # Track guessed letters
+    attempts_left = 6            # Max incorrect guesses allowed
+    word_display = ["_"] * len(word)  # Hidden word display
+
+    print("Welcome to Hangman!")
+    print("Guess the word, one letter at a time.")
+    print("You have 6 incorrect guesses allowed.")
+    print(" ".join(word_display))
+
+    # Main game loop
+    while attempts_left > 0 and "_" in word_display:
+        guess = input("\nEnter a letter: ").lower()
+
+        # Validate input
+        if not guess.isalpha() or len(guess) != 1:
+            print("Please enter a single valid letter.")
+            continue
+
+        if guess in guessed_letters:
+            print("You already guessed that letter. Try again.")
+            continue
+
+        guessed_letters.append(guess)
+
+        # Check if guess is in the word
+        if guess in word:
+            print(f"Good job! '{guess}' is in the word.")
+            # Reveal all positions of guessed letter
+            for i in range(len(word)):
+                if word[i] == guess:
+                    word_display[i] = guess
+        else:
+            attempts_left -= 1
+            print(f"Sorry, '{guess}' is not in the word. Attempts left: {attempts_left}")
+
+        print("Word:", " ".join(word_display))
+        print("Guessed letters:", ", ".join(guessed_letters))
+
+    # Game over conditions
+    if "_" not in word_display:
+        print("\n🎉 Congratulations! You guessed the word:", word)
+    else:
+        print("\n😢 Out of attempts! The word was:", word)
+
+# Run the game
+if __name__ == "__main__":
+    hangman()
